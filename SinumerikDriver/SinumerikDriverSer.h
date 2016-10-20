@@ -39,6 +39,7 @@ public:
 private:
 	BOOL m_bStopGetData;
 	static UINT GatData(LPVOID lpContext);
+protected:
 };
 
 

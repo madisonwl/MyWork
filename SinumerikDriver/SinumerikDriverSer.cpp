@@ -239,3 +239,4 @@ STDMETHODIMP_(BOOL) CSinumerikDriverSer::XNetMach1::GetVarMapData(CVarMapData* p
 	return FALSE;
 }
 
+
