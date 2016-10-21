@@ -57,7 +57,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ModuleDefinitionFile>.\SinumerikDriver.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <RegisterOutput>true</RegisterOutput>
     </Link>
     <Midl>
@@ -86,7 +87,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ModuleDefinitionFile>.\SinumerikDriver.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <RegisterOutput>true</RegisterOutput>
     </Link>
     <Midl>
@@ -119,6 +121,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataCallBack.h" />
     <ClInclude Include="DebugInfor.h" />
     <ClInclude Include="DriverVarValue.h" />
     <ClInclude Include="INetMach.h" />
@@ -126,6 +129,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SinumerikDriver.h" />
     <ClInclude Include="SinumerikDriverSer.h" />
+    <ClInclude Include="SinumerikDriver_h.h" />
     <ClInclude Include="SinumerikOperateData.h" />
     <ClInclude Include="SinumerikOperateSocket.h" />
     <ClInclude Include="SinumerikThread.h" />
@@ -134,10 +138,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\SinumerikDriver.rc2" />
-    <None Include="SinumerikDriver.def" />
+    <None Include="SinumerikDriver.rgs" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="SinumerikDriver.idl" />
+    <Midl Include="SinumerikDriver.idl">
+      <MkTypLibCompatible Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</MkTypLibCompatible>
+      <TargetEnvironment Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Win32</TargetEnvironment>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InterfaceIdentifierFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_i.c</InterfaceIdentifierFileName>
+      <GenerateStublessProxies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateStublessProxies>
+      <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName).tlb</TypeLibraryName>
+      <MkTypLibCompatible Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</MkTypLibCompatible>
+      <TargetEnvironment Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Win32</TargetEnvironment>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InterfaceIdentifierFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">SinumerikDriver_i.c</InterfaceIdentifierFileName>
+      <GenerateStublessProxies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateStublessProxies>
+      <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName).tlb</TypeLibraryName>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SinumerikDriver.rc" />

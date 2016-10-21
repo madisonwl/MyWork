@@ -60,6 +60,7 @@ CDriverDllTestDlg::CDriverDllTestDlg(CWnd* pParent /*=NULL*/)
 void CDriverDllTestDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_EDIT1, m_edit);
 }
 
 BEGIN_MESSAGE_MAP(CDriverDllTestDlg, CDialogEx)
@@ -71,6 +72,8 @@ BEGIN_MESSAGE_MAP(CDriverDllTestDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CDriverDllTestDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDriverDllTestDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON_GETALL, &CDriverDllTestDlg::OnBnClickedButtonGetall)
+	ON_BN_CLICKED(IDC_BUTTON2, &CDriverDllTestDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CDriverDllTestDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -107,6 +110,8 @@ BOOL CDriverDllTestDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化代码
 	Init();
+	m_dwCookie = 0;					// 初始化cookie，表示还没有调用 Advise() 函数
+	m_Testcallbcak.SetResultWnd(&m_edit);	// 告诉接收器，计算结果显示在这个窗口中
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -249,4 +254,35 @@ void CDriverDllTestDlg::OnBnClickedButtonGetall()
 		pNetMach->GetVarMapData(pData);
 		AfxMessageBox(sValue);
 	}
+}
+
+
+void CDriverDllTestDlg::OnBnClickedButton2()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	if (pNetMach != NULL)
+	{
+		HRESULT hr = pNetMach->Advise(&m_Testcallbcak, (long *)&m_dwCookie);
+		if (SUCCEEDED(hr))
+		{
+			AfxMessageBox(_T("Advise 调用成功。已经正确连接"));
+			GetDlgItem(IDC_BUTTON2)->EnableWindow(FALSE);
+			GetDlgItem(IDC_BUTTON4)->EnableWindow(TRUE);
+		}
+		else
+		{
+			AfxMessageBox(_T("Advise 调用失败"));
+		}
+	}
+}
+
+
+void CDriverDllTestDlg::OnBnClickedButton3()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	UpdateData();				// 取得加数 和 被加数
+	int m_n1 = 100;
+	int m_n2 = 3;
+	pNetMach->Add(m_n1, m_n2);	// 计算去吧，我也不知道什么时候会有结果
+	// 如果有结果的话，CSink::raw_Fire_Result()就会被调用
 }

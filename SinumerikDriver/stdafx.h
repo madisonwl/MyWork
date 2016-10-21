@@ -4,6 +4,7 @@
 
 #pragma once
 
+#define _ATL_APARTMENT_THREADED 
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN            // 从 Windows 头中排除极少使用的资料
 #endif
@@ -37,3 +38,7 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #define WM_SINUMTHREADMSG1 (WM_USER + 100)
+
+#include <atlbase.h>
+#include <atlcom.h>
+#include <atlctl.h>

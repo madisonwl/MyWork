@@ -22,6 +22,12 @@ CSinumerikDriverSer::CSinumerikDriverSer()
 	//	运行，构造函数调用 AfxOleLockApp。
 	m_pThread = NULL;
 	m_bStopGetData = FALSE;
+
+	for (int i = 0; i < 10; i++)		// 初始化所有的回调接口为 NULL
+	{
+		m_pCallBack[i] = NULL;
+	}
+
 	AfxOleLockApp();
 }
 
@@ -62,8 +68,12 @@ END_DISPATCH_MAP()
 static const IID IID_ISinumerikDriverSer =
 { 0x8E729AA6, 0x9E85, 0x45E2, { 0xBC, 0x41, 0x76, 0xFA, 0xE5, 0x6E, 0xC1, 0x35 } };
 
+static const IID IID_ISinuDataCallBack =
+{ 0xDF58665D, 0x1302, 0x481E, { 0xB9, 0x8F, 0xCA, 0x8F, 0xE6, 0xC1, 0xC7, 0x66 } };
+
 BEGIN_INTERFACE_MAP(CSinumerikDriverSer, CCmdTarget)
 	INTERFACE_PART(CSinumerikDriverSer, IID_ISinumerikDriverSer, Dispatch)
+	INTERFACE_PART(CSinumerikDriverSer, IID_ISinuDataCallBack, Dispatch)
 	INTERFACE_PART(CSinumerikDriverSer, IID_NetMach1, NetMach1) // Add-wl-2016818
 END_INTERFACE_MAP()
 
@@ -197,6 +207,36 @@ BOOL CSinumerikDriverSer::GetVarMapData(CVarMapData* pData)
 	return FALSE;
 }
 
+HRESULT CSinumerikDriverSer::Advise(ISinuDataCallBack * pCallBack, long * pdwCookie)
+{
+	for (int i = 0; i < 10; i++)	// 寻找一个保存该接口指针的位置
+	{
+		if (NULL == m_pCallBack[i])	// 找到了
+		{
+			m_pCallBack[i] = pCallBack;	// 保存到数组中
+			m_pCallBack[i]->AddRef();	// 指针计数器 +1
+
+			*pdwCookie = i + 1;			// cookie 就是数组下标
+									    // +1 的目的是避免使用0，因为0表示无效
+			return S_OK;
+		}
+	}
+	return E_OUTOFMEMORY;	// 超过10个连接，内存不够用啦
+}
+
+HRESULT CSinumerikDriverSer::Unadvise(long dwCookie)
+{
+	if (NULL == m_pCallBack[dwCookie - 1])	// 参数错误，或该接口指针已经无效了
+	{
+		return E_INVALIDARG;
+	}
+	
+	m_pCallBack[dwCookie - 1]->Release();	// 指针计数器 -1
+	m_pCallBack[dwCookie - 1] = NULL;		// 空出该下标的数组元素
+
+	return S_OK;
+}
+
 STDMETHODIMP_(BOOL) CSinumerikDriverSer::XNetMach1::Start(const CHAR* szMachIP, int nPort)
 {
 	METHOD_PROLOGUE(CSinumerikDriverSer, NetMach1);
@@ -239,4 +279,51 @@ STDMETHODIMP_(BOOL) CSinumerikDriverSer::XNetMach1::GetVarMapData(CVarMapData* p
 	return FALSE;
 }
 
+STDMETHODIMP_(HRESULT) CSinumerikDriverSer::XNetMach1::Advise(ISinuDataCallBack * pCallBack, long * pdwCookie)
+{
+	METHOD_PROLOGUE(CSinumerikDriverSer, NetMach1);
+	if (NULL == pCallBack)
+	{
+		return E_INVALIDARG;
+	}
+	return pThis->Advise(pCallBack, pdwCookie);
+}
 
+STDMETHODIMP_(HRESULT) CSinumerikDriverSer::XNetMach1::Unadvise(long dwCookie)
+{
+	METHOD_PROLOGUE(CSinumerikDriverSer, NetMach1);
+	if (dwCookie<1 || dwCookie>10)	// 这是谁干的呀？乱给参数
+	{
+		return E_INVALIDARG;
+	}
+	
+	return pThis->Unadvise(dwCookie);
+}
+
+STDMETHODIMP_(HRESULT) CSinumerikDriverSer::XNetMach1::Add(long n1, long n2)
+{
+	METHOD_PROLOGUE(CSinumerikDriverSer, NetMach1);
+	return pThis->Add(n1, n2);
+}
+
+HRESULT CSinumerikDriverSer::Add(long n1, long n2)
+{
+	long n = n1 + n2;
+	for (int i = 0; i < 10; i++)
+	{
+		if (m_pCallBack[i])						// 如果回调接口有效
+		{
+			m_pCallBack[i]->Fire_Test(n);
+		}
+	}
+	return S_FALSE;
+}
+
+
+STDMETHODIMP CSinumerikDriverSer::Fire_Test(LONG nSend)
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+	// TODO:  在此添加实现代码
+	return S_OK;
+}

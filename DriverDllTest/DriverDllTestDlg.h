@@ -4,6 +4,8 @@
 
 #pragma once
 #include "INetMach.h"
+#include "TestCallBack.h"
+#include "afxwin.h"
 
 // CDriverDllTestDlg ¶Ô»°¿ò
 class CDriverDllTestDlg : public CDialogEx
@@ -38,4 +40,9 @@ public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButtonGetall();
 	CVarMapData* pData;
+	afx_msg void OnBnClickedButton2();
+	CTestCallBack m_Testcallbcak;
+	DWORD m_dwCookie;
+	afx_msg void OnBnClickedButton3();
+	CEdit m_edit;
 };

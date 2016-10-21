@@ -36,6 +36,12 @@
     <ClInclude Include="NetMachDriverData.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\SinumerikDriver\SinumerikDriver_h.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCallBack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DriverDllTest.cpp">
@@ -48,6 +54,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="NetMachDriverData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCallBack.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -83,12 +83,18 @@
     <ClInclude Include="DriverVarValue.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="DataCallBack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SinumerikDriver_h.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SinumerikDriver.def">
-      <Filter>源文件</Filter>
-    </None>
     <None Include="res\SinumerikDriver.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="SinumerikDriver.rgs">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>

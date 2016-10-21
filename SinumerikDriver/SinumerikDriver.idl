@@ -3,39 +3,30 @@
 // 类型库(SinumerikDriver.tlb)。
 
 #include "olectl.h"
-[uuid(BB4ADB0D-412D-4F9A-8A63-EFBE5087A011), version(1.0)]
+
 //手动添加-begin
-/*
-interface ICallBack : IUnknown
-{
-};
+
+import "ocidl.idl";
+import "oaidl.idl";
 [
 	object,
 	uuid(DF58665D-1302-481E-B98F-CA8FE6C1C766),  //GUID.exe生成
 	version(1.0),
-]*/
+]
+interface ISinuDataCallBack : IUnknown
+{
+	[] HRESULT Fire_Test([in] LONG nSend);
+};
+
+[
+	uuid(BB4ADB0D-412D-4F9A-8A63-EFBE5087A011), 
+	version(1.0),
+]
 library SinumerikDriver
 {
 	importlib("stdole32.tlb");
 	importlib("stdole2.tlb");
-	/*//  SinumerikDriverCom 的主调度接口
-		
-	[ uuid(A5DF808F-92DA-405B-8728-FE2B45F39FD4) ]
-	dispinterface ISinumerikDriverCom
-	{
-		properties:
-		methods:
-			[id(1)] HRESULT GetVarsValue([in] CHAR* szVarName);
-			[id(2)] HRESULT Advise([in] ICallBack* pCallBack, [out]  long *pdwCookie);
-	};*/
 
-	//  SinumerikDriverCom 的类信息
-
-	/*[ uuid(6DCF3119-9C41-4B14-A6BF-DC3CEDB3C847) ]
-	coclass SinumerikDriverCom
-	{
-		[default] dispinterface ISinumerikDriverCom;
-	};*/
 	//  SinumerikDriverSer 的主调度接口
 		
 	[ uuid(8E729AA6-9E85-45E2-BC41-76FAE56EC135) ]
@@ -51,5 +42,6 @@ library SinumerikDriver
 	coclass SinumerikDriverSer
 	{
 		[default] dispinterface ISinumerikDriverSer;
+		[source, default] interface ISinuDataCallBack;	// 需要手工输入
 	};
 };

@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Thu Oct 20 13:31:14 2016
+/* at Fri Oct 21 15:41:33 2016
  */
 /* Compiler settings for SinumerikDriver.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
@@ -31,6 +31,10 @@
 #error this stub requires an updated version of <rpcndr.h>
 #endif // __RPCNDR_H_VERSION__
 
+#ifndef COM_NO_WINDOWS_H
+#include "windows.h"
+#include "ole2.h"
+#endif /*COM_NO_WINDOWS_H*/
 
 #ifndef __SinumerikDriver_h_h__
 #define __SinumerikDriver_h_h__
@@ -40,6 +44,13 @@
 #endif
 
 /* Forward Declarations */ 
+
+#ifndef __ISinuDataCallBack_FWD_DEFINED__
+#define __ISinuDataCallBack_FWD_DEFINED__
+typedef interface ISinuDataCallBack ISinuDataCallBack;
+
+#endif 	/* __ISinuDataCallBack_FWD_DEFINED__ */
+
 
 #ifndef __ISinumerikDriverSer_FWD_DEFINED__
 #define __ISinumerikDriverSer_FWD_DEFINED__
@@ -60,9 +71,92 @@ typedef struct SinumerikDriverSer SinumerikDriverSer;
 #endif 	/* __SinumerikDriverSer_FWD_DEFINED__ */
 
 
+/* header files for imported files */
+#include "ocidl.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif 
+
+
+#ifndef __ISinuDataCallBack_INTERFACE_DEFINED__
+#define __ISinuDataCallBack_INTERFACE_DEFINED__
+
+/* interface ISinuDataCallBack */
+/* [version][uuid][object] */ 
+
+
+EXTERN_C const IID IID_ISinuDataCallBack;
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+    
+    MIDL_INTERFACE("DF58665D-1302-481E-B98F-CA8FE6C1C766")
+    ISinuDataCallBack : public IUnknown
+    {
+    public:
+        virtual HRESULT STDMETHODCALLTYPE Fire_Test( 
+            /* [in] */ LONG nSend) = 0;
+        
+    };
+    
+    
+#else 	/* C style interface */
+
+    typedef struct ISinuDataCallBackVtbl
+    {
+        BEGIN_INTERFACE
+        
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+            ISinuDataCallBack * This,
+            /* [in] */ REFIID riid,
+            /* [annotation][iid_is][out] */ 
+            _COM_Outptr_  void **ppvObject);
+        
+        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+            ISinuDataCallBack * This);
+        
+        ULONG ( STDMETHODCALLTYPE *Release )( 
+            ISinuDataCallBack * This);
+        
+        HRESULT ( STDMETHODCALLTYPE *Fire_Test )( 
+            ISinuDataCallBack * This,
+            /* [in] */ LONG nSend);
+        
+        END_INTERFACE
+    } ISinuDataCallBackVtbl;
+
+    interface ISinuDataCallBack
+    {
+        CONST_VTBL struct ISinuDataCallBackVtbl *lpVtbl;
+    };
+
+    
+
+#ifdef COBJMACROS
+
+
+#define ISinuDataCallBack_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define ISinuDataCallBack_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define ISinuDataCallBack_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define ISinuDataCallBack_Fire_Test(This,nSend)	\
+    ( (This)->lpVtbl -> Fire_Test(This,nSend) ) 
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
+
+
+
+
+#endif 	/* __ISinuDataCallBack_INTERFACE_DEFINED__ */
 
 
 

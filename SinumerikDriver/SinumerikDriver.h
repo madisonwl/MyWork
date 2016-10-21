@@ -9,7 +9,6 @@
 
 #include "resource.h"		// 主符号
 
-
 // CSinumerikDriverApp
 // 有关此类实现的信息，请参阅 SinumerikDriver.cpp
 //
